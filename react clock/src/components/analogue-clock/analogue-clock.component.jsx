@@ -1,26 +1,43 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import './analogue-clock.style.css';
-import mom3ent from 'moment';
+import moment from 'moment';
 
  function AnalogueClock(props){
     const {timezone} = props;
-    const [date,setDate] = useState(new Date().toLocaleString("en-US", {timeZone: timezone}))
+     let date = new Date(new Date().toLocaleString("en-US", {timeZone: timezone}));
+    const [hours,setHours] = useState((date.getHours() + 11) % 12 + 1);
+    const [minutes,setMinutes] = useState(date.getMinutes());
+    const [seconds,setSeconds] = useState(date.getSeconds());
 
-const hours = ((date.getHours() + 11) % 12 + 1)
-const minutes = date.getMinutes();
-const seconds = date.getSeconds();
- const hour = hours * 30;
-  const minute = minutes * 6;
-  const second = seconds * 6;
+
+
+     useEffect(() => {
+         let interval = null;
+         interval = setInterval(() => {
+             date = new Date(new Date().toLocaleString("en-US", {timeZone: timezone}));
+             setHours(((date.getHours() + 11) % 12 + 1));
+             setMinutes( date.getMinutes());
+             setSeconds(date.getSeconds());
+         }, 1000);
+
+         return () => clearInterval(interval);
+
+     }, [minutes,hours, seconds]);
+
+
 
     return(
-        <div class="clock">
-            <div class="wrap">
-                <span class="hour" style={{transform:`rotate(${hour}deg)`}}></span>
-                <span class="minute"></span>
-                <span class="second"></span>
-                <span class="dot"></span>
+        <div className="analogue">
+            <div className="clock">
+                <div className="wrap">
+                    <span className="hour" style={{transform: `rotate(${hours * 30}deg)`}}></span>
+                    <span className="minute" style={{transform: `rotate(${minutes * 6}deg)`}}></span>
+                    <span className="second" style={{transform: `rotate(${seconds * 6}deg)`}}></span>
+                    <span className="dot"></span>
+                </div>
             </div>
+            <p className={"time-label"}>{moment(date).format("H:mm:ss a")}</p>
+
         </div>
     )
 }

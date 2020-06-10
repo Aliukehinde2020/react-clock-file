@@ -11,11 +11,11 @@ const ClockContainer = ()=>{
     useEffect(()=>{
         fetch("http://worldtimeapi.org/api/timezone")
         .then(response=>{
-        
+
             return response.json();
-           
+
         }).then((data)=>{
-         
+
             setTimezone(data);
         })
     },[]);
@@ -42,14 +42,23 @@ const ClockContainer = ()=>{
             alert("Time zone can not be empty");
         }
     }
+
+    const removeTimezone=(selectedZone)=>{
+
+        const filtered_times = times.filter(time=>time!==selectedZone);
+        localStorage.setItem("user_times", JSON.stringify([...filtered_times]));
+        setTimes([...filtered_times]);
+    };
     return(
         <div className="clock-container">
             <h4>My World Clock</h4>
             <div className="card-body">
                 <form action="" onSubmit={handleSubmit}>
-                <ClockSelect value={selectedZone} onChange={(value)=>setSelectedZone(value)} timezones={timezones} />
-                <div className="input-group">
-                  <button  type="submit">Add Timezone</button>
+                <div className="form-row" >
+                    <ClockSelect value={selectedZone} onChange={(value)=>setSelectedZone(value)} timezones={timezones} />
+                    <div className="input-group">
+                        <button  type="submit">Add Timezone</button>
+                    </div>
                 </div>
                 </form>
 
@@ -59,12 +68,15 @@ const ClockContainer = ()=>{
                            return(
                             <div key={index} className="clock-col">
                                 <AnalogueClock timezone={time} />
-                           <p>{time}</p>
+                           <p className={"timezone-label"}>{time.replace("/"," - ")}</p>
+                               <p style={{textAlign:"center"}}>
+                                   <button type={"button"} onClick={()=>removeTimezone(time)} className={"remove"}>Remove</button>
+                               </p>
                             </div>
                            )
                        })
                    }
-                
+
                 </div>
             </div>
         </div>

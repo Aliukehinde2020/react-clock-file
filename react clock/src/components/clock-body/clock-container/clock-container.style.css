@@ -30,5 +30,34 @@ form{
 margin-top:20px;
 display: flex;
 flex-direction: row;
-flex-wrap: wrap-reverse;
+flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.timezone-label{
+    background-color: #fff;
+    color:#000;
+    font-weight: 700;
+    border-radius: 2px;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+    text-align: center;
+    margin: 10px;
+    padding: 5px;
+}
+
+.remove{
+
+    padding: 10px 20px;
+    border:1px solid #ee3f30;
+    border-radius: 2px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #ee3f30;
+
+}
+
+.form-row{
+    max-width: 500px;
+    margin: 0 auto;
 }
